@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %} General Home {% endblock %}
+
+{% block navlist %}
+<li class="nav-item">
+	<a class="nav-link" aria-current="page" href="{% url 'signup' %}">Create New Account</a>
+</li>
+<li class="nav-item">
+	<a class="nav-link" aria-current="page" href="{% url 'add-email' %}">Add Email Address</a>
+</li>
+{% endblock %}
+
+{% block right-nav %} 
+
+{% if request.user.is_authenticated %}
+<li class="nav-item">
+	<a class="nav-link" href="{% url 'logout' %}">Logout</a>
+</li>
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+	<div class="row">
+		<div class="col-sm-12 col-md-6 col-lg-6">
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title">Create New Project No.</h5>
+					<h6 class="card-subtitle mb-2 text-muted">Issue new Quotation for this project</h6>
+					<form method="post">
+						{% csrf_token %}
+
+						{{ form.as_p }}
+						<input type="submit" name="submit" value="Ok" class="btn btn-primary">
+					</form>
+
+				</div>
+			</div>
+
+			{% if project_no %}
+			<p class="mt-2">Projects On Queue</p>
+			{% for p_no in project_no %}
+			<button type="button" class="btn btn-outline-dark">{{ p_no }} -> {{ p_no.p_count }}</button>
+			{% endfor %}
+			{% endif %}
+
+		</div>
+
+		<div class="col-sm-12 col-md-6 col-lg-6">
+			<div class="row mt-2">
+				{% if msg %}
+				<p> {{ msg }} </p>
+				{% endif %}
+			</div>
+
+			<div class="row mt-3">
+				{% if q_files %}
+
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Arrived Quotation Files</h5>
+						<ul class="list-group">
+							{% for q_file in q_files %}
+							<li class="list-group-item">({{ q_file.user|title }})-{{ q_file.company_name|title }} - {{ q_file.project_no|title }} - {{ q_file.created_at }}</li>
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+
+				
+				{% endif %}
+			</div>
+			
+		</div>
+	</div>
+</div>
+{% endblock %}

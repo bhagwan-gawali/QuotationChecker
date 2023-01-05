@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block navlist %}
+    <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{% url 'general-home' %}">Back</a>
+        </li>
+{% endblock %}
+
+{% block right-nav %} 
+
+{% if request.user.is_authenticated %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+</li>
+{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"> Create New Account </h5>
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="text text-{{ message.tags }}"> {{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+
+                    <input type="submit" value="SignUp" class="btn btn-sm btn-primary">
+                </form>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8">
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

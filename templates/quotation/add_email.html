@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %} Add Email {% endblock %}
+
+{% block navlist %}
+<li class="nav-item">
+  <a class="nav-link" aria-current="page" href="{% url 'general-home' %}">Back</a>
+</li>
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3">
+	<div class="row mt-3">
+		<div class="col-sm-12 col-md-4 col-lg-4">
+			<form method="post">
+				{% csrf_token %}
+				{{ form.as_p }}
+				<input type="submit" name="submit" value="Add Email" class="btn btn-sm btn-info">
+			</form>
+		</div>
+		<div class="col-sm-12 col-md-8 col-lg-8">
+
+			{% if emails %}
+			<ul class="list-group">
+				{% for email in emails %}
+  				<li class="list-group-item d-flex justify-content-between align-items-center">
+    {{ email }}
+    <span class="badge bg-info rounded-pill"><a href="{% url 'remove-email' email.id %}"> Delete </a></span>
+  </li>
+  				{% endfor %}
+			</ul>
+			{% endif %}
+
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}
